@@ -1,0 +1,3040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rebbe Points - Professional Teacher Management System</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dzlhbhuua/image/upload/c_fill,g_auto,w_32,h_32,r_max/v1730151234/Rebbe_Points_Logo_Circle_hazw7v.png"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+   
+    :root {
+      --primary-color: #1ab5f4;
+      --primary-dark: #1495c7;
+      --secondary-color: #64748b;
+      --success-color: #059669;
+      --warning-color: #e7af26;
+      --danger-color: #dc2626;
+      --info-color: #0ea5e9;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --surface-secondary: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --sidebar-width: 280px;
+      --topbar-height: 70px;
+    }
+   
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+   
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Authentication Screen */
+    .auth-screen {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--warning-color) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+   
+    .auth-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 3rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+    }
+   
+    .auth-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+   
+    .auth-subtitle {
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+   
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+   
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+   
+    .form-input, .form-input2 {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+      background: var(--surface);
+    }
+   
+    .form-input:focus, .form-input2:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgb(26 181 244 / 0.1);
+    }
+   
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+   
+    .btn-primary {
+      background: var(--primary-color);
+      color: var(--surface);
+    }
+   
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+   
+    .btn-secondary {
+      background: var(--secondary-color);
+      color: var(--surface);
+    }
+   
+    .btn-success {
+      background: var(--success-color);
+      color: var(--surface);
+    }
+   
+    .btn-warning {
+      background: var(--warning-color);
+      color: var(--surface);
+    }
+   
+    .btn-danger {
+      background: var(--danger-color);
+      color: var(--surface);
+    }
+
+    .btn-info {
+      background: var(--info-color);
+      color: var(--surface);
+    }
+   
+    .btn-full {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+   
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+   
+    .account-type-selection {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+   
+    .account-type-btn {
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-weight: 500;
+    }
+   
+    .account-type-btn.active {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.05);
+      color: var(--primary-color);
+    }
+   
+    .auth-switch {
+      color: var(--primary-color);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+   
+    .error-message, .success-message {
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+   
+    .error-message {
+      background: rgb(220 38 38 / 0.1);
+      color: var(--danger-color);
+      border: 1px solid rgb(220 38 38 / 0.2);
+    }
+   
+    .success-message {
+      background: rgb(5 150 105 / 0.1);
+      color: var(--success-color);
+      border: 1px solid rgb(5 150 105 / 0.2);
+    }
+
+    /* Sidebar Layout */
+    .app-layout {
+      display: none;
+      min-height: 100vh;
+    }
+   
+    .app-layout.active {
+      display: flex;
+    }
+   
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--surface);
+      border-right: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+   
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+   
+    .sidebar-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+   
+    .sidebar-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+   
+    .sidebar-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+   
+    .sidebar-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+   
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+   
+    .nav-section {
+      margin-bottom: 2rem;
+    }
+   
+    .nav-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+   
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+    }
+   
+    .nav-item:hover {
+      background: var(--surface-secondary);
+      color: var(--text-primary);
+    }
+   
+    .nav-item.active {
+      background: rgb(26 181 244 / 0.1);
+      color: var(--primary-color);
+      border-left-color: var(--primary-color);
+    }
+   
+    .nav-icon {
+      font-size: 1.25rem;
+      width: 20px;
+      text-align: center;
+    }
+   
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      background: var(--surface);
+    }
+   
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+   
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+   
+    .user-details h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+   
+    .user-details p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+   
+    /* Main Content Area */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      width: calc(100% - var(--sidebar-width));
+    }
+   
+    .topbar {
+      height: var(--topbar-height);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+   
+    .hamburger-menu {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--text-primary);
+    }
+   
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+   
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+   
+    .class-selector {
+      min-width: 200px;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+   
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+   
+    .search-input {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      min-width: 250px;
+      background: var(--surface);
+    }
+   
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+   
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+   
+    .view-toggle {
+      display: flex;
+      background: var(--surface-secondary);
+      border-radius: 8px;
+      padding: 0.25rem;
+    }
+   
+    .view-option {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+   
+    .view-option.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow);
+    }
+   
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Admin Styles */
+    .admin-header {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
+   
+    .admin-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+   
+    .admin-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+   
+    .admin-content {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface-secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Student Cards */
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .students-list {
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .student-list-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .student-list-item:hover {
+      box-shadow: var(--shadow);
+      background: var(--surface-secondary);
+    }
+
+    .student-list-item.selected {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.05);
+    }
+
+    .student-list-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      overflow: hidden;
+    }
+
+    .student-list-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .student-list-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .student-list-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .student-list-details {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .student-list-points {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 1.125rem;
+    }
+
+    .student-list-actions {
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .student-list-item:hover .student-list-actions {
+      opacity: 1;
+    }
+   
+    .student-card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+   
+    .student-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .student-card.selected {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.05);
+    }
+   
+    .student-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 auto 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .student-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+   
+    .student-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+   
+    .student-points {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .student-rewards {
+      font-size: 0.875rem;
+      color: var(--success-color);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .student-instant-rewards {
+      font-size: 0.875rem;
+      color: var(--info-color);
+      font-weight: 500;
+    }
+   
+    .add-student-card {
+      background: var(--surface-secondary);
+      border: 2px dashed var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+   
+    .add-student-card:hover {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.05);
+    }
+   
+    .add-student-icon {
+      font-size: 2rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Class Detail View */
+    .class-detail-card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: all 0.2s;
+    }
+
+    .class-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    .class-detail-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .class-detail-teacher {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .class-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .class-stat {
+      text-align: center;
+      padding: 1rem;
+      background: var(--surface-secondary);
+      border-radius: 8px;
+    }
+
+    .class-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .class-stat-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .students-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .students-table th,
+    .students-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .students-table th {
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--surface-secondary);
+    }
+
+    .students-table tbody tr:hover {
+      background: var(--surface-secondary);
+    }
+
+    /* Rewards Section */
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .reward-card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .reward-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .reward-card.instant-reward {
+      border-left: 4px solid var(--info-color);
+    }
+
+    .reward-card.points-reward {
+      border-left: 4px solid var(--success-color);
+    }
+
+    .reward-type-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .instant-badge {
+      background: rgb(14 165 233 / 0.1);
+      color: var(--info-color);
+    }
+
+    .points-badge {
+      background: rgb(5 150 105 / 0.1);
+      color: var(--success-color);
+    }
+
+    .reward-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .reward-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .reward-points {
+      background: var(--primary-color);
+      color: var(--surface);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .reward-description {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .reward-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Leaderboard */
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+    }
+   
+    .leaderboard-rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--surface);
+      font-size: 0.875rem;
+    }
+   
+    .rank-1 { background: var(--warning-color); }
+    .rank-2 { background: #9ca3af; }
+    .rank-3 { background: #f59e0b; }
+    .leaderboard-rank:not(.rank-1):not(.rank-2):not(.rank-3) {
+      background: var(--primary-color);
+    }
+   
+    .leaderboard-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      overflow: hidden;
+    }
+
+    .leaderboard-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+   
+    .leaderboard-name {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+   
+    .leaderboard-points {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    /* Bulk Actions */
+    .bulk-actions {
+      display: none;
+      background: rgb(26 181 244 / 0.1);
+      border: 1px solid rgb(26 181 244 / 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+   
+    .bulk-actions.active {
+      display: flex;
+    }
+   
+    .selected-count {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+   
+    .bulk-point-input {
+      width: 80px;
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      padding: 1rem;
+    }
+   
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+   
+    .modal-content {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-content.large {
+      max-width: 800px;
+    }
+   
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+   
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+   
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 0.25rem;
+    }
+   
+    .modal-footer {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    /* File upload styles */
+    .file-upload {
+      display: none;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.05);
+    }
+
+    .upload-area.dragover {
+      border-color: var(--primary-color);
+      background: rgb(26 181 244 / 0.1);
+    }
+
+    /* Reward Type Toggle */
+    .reward-type-toggle {
+      display: flex;
+      background: var(--surface-secondary);
+      border-radius: 8px;
+      padding: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .reward-type-option {
+      flex: 1;
+      padding: 0.75rem;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .reward-type-option.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow);
+    }
+
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow-lg);
+      z-index: 1100;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      max-width: 400px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      border-left: 4px solid var(--success-color);
+    }
+
+    .notification.info {
+      border-left: 4px solid var(--info-color);
+    }
+
+    .notification.warning {
+      border-left: 4px solid var(--warning-color);
+    }
+
+    .notification.error {
+      border-left: 4px solid var(--danger-color);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+     
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+     
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+     
+      .hamburger-menu {
+        display: block;
+      }
+     
+      .topbar {
+        padding: 0 1rem;
+      }
+     
+      .content-area {
+        padding: 1rem;
+      }
+     
+      .students-grid {
+        grid-template-columns: 1fr;
+      }
+     
+      .search-input {
+        min-width: auto;
+        width: 100%;
+      }
+     
+      .content-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+     
+      .action-buttons {
+        justify-content: center;
+      }
+
+      .notification {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+      }
+
+      .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .class-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mt-4 { margin-top: 1rem; }
+    .hidden { display: none; }
+    .relative { position: relative; }
+  </style>
+</head>
+<body>
+
+  <!-- Authentication Screen -->
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <div id="loginForm">
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to access your classroom management system</p>
+       
+        <div class="error-message" id="loginError"></div>
+       
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">Username</label>
+          <input type="text" class="form-input" id="loginUsername" placeholder="Enter your username"/>
+        </div>
+       
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password"/>
+        </div>
+       
+        <button class="btn btn-primary btn-full" id="loginBtn">Sign In</button>
+       
+        <p class="text-center">Don't have an account? <span class="auth-switch" onclick="showSignup()">Create one here</span></p>
+      </div>
+
+      <div id="signupForm" style="display:none;">
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join our teacher management platform</p>
+       
+        <div class="error-message" id="signupError"></div>
+        <div class="success-message" id="signupSuccess"></div>
+       
+        <div class="account-type-selection">
+          <button type="button" class="account-type-btn active" data-type="personal" onclick="selectAccountType('personal')">
+            <div>👨‍🏫 Teacher</div>
+            <small>Personal classroom</small>
+          </button>
+          <button type="button" class="account-type-btn" data-type="admin" onclick="selectAccountType('admin')">
+            <div>🏫 Administrator</div>
+            <small>School management</small>
+          </button>
+        </div>
+       
+        <div class="form-group">
+          <label class="form-label" for="signupUsername">Username</label>
+          <input type="text" class="form-input" id="signupUsername" placeholder="Choose a username"/>
+        </div>
+       
+        <div class="form-group">
+          <label class="form-label" for="signupPassword">Password</label>
+          <input type="password" class="form-input" id="signupPassword" placeholder="Choose a secure password"/>
+        </div>
+       
+        <div class="form-group">
+          <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
+          <input type="password" class="form-input" id="signupConfirmPassword" placeholder="Confirm your password"/>
+        </div>
+       
+        <div class="form-group">
+          <label class="form-label" for="signupSchool">School Name</label>
+          <input type="text" class="form-input" id="signupSchool" placeholder="Enter your school name"/>
+        </div>
+       
+        <button class="btn btn-primary btn-full" id="signupBtn">Create Account</button>
+       
+        <p class="text-center">Already have an account? <span class="auth-switch" onclick="showLogin()">Sign in here</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Layout -->
+  <div class="app-layout" id="appLayout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="https://res.cloudinary.com/dzlhbhuua/image/upload/c_fill,g_auto,w_40,h_40,r_max/v1730151234/Rebbe_Points_Logo_Circle_hazw7v.png" alt="Rebbe Points Logo"/>
+        </div>
+        <div class="sidebar-title">Rebbe Points</div>
+      </div>
+     
+      <nav class="sidebar-nav">
+        <!-- Dynamic nav items will be loaded here -->
+      </nav>
+     
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebarUserAvatar">T</div>
+          <div class="user-details">
+            <h4 id="sidebarUsername">Teacher</h4>
+            <p id="sidebarSchool">School Name</p>
+          </div>
+        </div>
+        <button class="btn btn-warning" onclick="logout()" style="width: 100%; font-size: 0.875rem;">
+          <span>🚪</span> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="hamburger-menu" onclick="toggleSidebar()">☰</span>
+          <h1 class="page-title" id="pageTitle">Students</h1>
+          <select class="class-selector" id="classSelector"></select>
+          <button class="btn btn-info" style="padding: 0.5rem 1rem;" onclick="copyClassName()">Copy Class Name</button>
+        </div>
+        <div class="topbar-right">
+          <input type="text" class="search-input" id="searchInput" placeholder="Search students..." oninput="onSearchChange()"/>
+          <button class="btn btn-primary" onclick="openNewClassModal()">New Class</button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" id="bulkActions">
+          <span class="selected-count" id="selectedCount">0 selected</span>
+          <label>Points: <input type="number" class="bulk-point-input" id="bulkPointAmount" value="1" min="1"/></label>
+          <button class="btn btn-success" onclick="openBulkPointsModal('add')">Add Points</button>
+          <button class="btn btn-warning" onclick="openBulkPointsModal('subtract')">Subtract Points</button>
+          <button class="btn btn-secondary" onclick="exitBulkMode()">Cancel</button>
+        </div>
+
+        <!-- Students View -->
+        <div id="studentsView">
+          <div class="content-header">
+            <div class="view-toggle">
+              <button class="view-option active" data-view="grid" onclick="switchStudentView(event, 'grid')">Grid View</button>
+              <button class="view-option" data-view="list" onclick="switchStudentView(event, 'list')">List View</button>
+            </div>
+            <div class="action-buttons">
+              <button class="btn btn-success" onclick="openAddStudentModal()">Add Student</button>
+              <button class="btn btn-success" onclick="openAddMultipleModal()">Add Multiple</button>
+              <button class="btn btn-secondary" onclick="enterBulkMode()">Bulk Actions</button>
+            </div>
+          </div>
+         
+          <div class="students-grid" id="studentsGrid">
+            <div class="student-card add-student-card" onclick="openAddStudentModal()">
+              <div class="add-student-icon">➕</div>
+              <div>Add New Student</div>
+            </div>
+          </div>
+
+          <div class="students-list" id="studentsList"></div>
+        </div>
+
+        <!-- Leaderboard View -->
+        <div id="leaderboardView" style="display:none;">
+          <div class="content-header">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Class Leaderboard</h2>
+          </div>
+          <div class="leaderboard" id="leaderboard"></div>
+        </div>
+
+        <!-- Rewards View -->
+        <div id="rewardsView" style="display:none;">
+          <div class="content-header">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Class Rewards</h2>
+            <div class="action-buttons">
+              <button class="btn btn-primary" onclick="openCreateRewardModal()">Create Reward</button>
+            </div>
+          </div>
+          <div class="rewards-grid" id="rewardsGrid"></div>
+        </div>
+
+        <!-- History View -->
+        <div id="historyView" style="display:none;">
+          <div class="content-header">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Points History</h2>
+            <div class="action-buttons">
+              <button class="btn btn-info" onclick="exportHistory()">Export History</button>
+              <button class="btn btn-warning" onclick="clearHistory()">Clear History</button>
+            </div>
+          </div>
+          <div id="historyList" style="max-height: 70vh; overflow-y: auto;"></div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settingsView" style="display:none;">
+          <div class="content-header">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Settings</h2>
+          </div>
+         
+          <div style="display: grid; gap: 2rem;">
+            <div style="background: var(--surface); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+              <h3 style="margin-bottom: 1rem; color: var(--text-primary);">User Information</h3>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>Username:</span>
+                <span id="settingsUsername" style="font-weight: 600;"></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>School:</span>
+                <span id="settingsSchool" style="font-weight: 600;"></span>
+              </div>
+            </div>
+           
+            <div style="background: var(--surface); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+              <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Class Statistics</h3>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>Current Class:</span>
+                <span id="currentClassName" style="font-weight: 600;"></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>Total Students:</span>
+                <span id="totalStudents" style="font-weight: 600;">0</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span>Total Points Awarded:</span>
+                <span id="totalPoints" style="font-weight: 600;">0</span>
+              </div>
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-warning" onclick="resetAllPoints()">Reset All Points</button>
+                <button class="btn btn-info" onclick="backupClassData()">Backup Data</button>
+              </div>
+            </div>
+           
+            <div style="background: rgb(220 38 38 / 0.1); padding: 2rem; border-radius: 12px; border: 1px solid rgb(220 38 38 / 0.2);">
+              <h3 style="margin-bottom: 1rem; color: var(--danger-color);">Danger Zone</h3>
+              <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                This action cannot be undone. This will permanently delete the current class and all student data.
+              </p>
+              <button class="btn btn-danger" onclick="deleteCurrentClass()">Delete Current Class</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modals -->
+ 
+  <!-- Create Class Modal (Admin) -->
+  <div class="modal" id="createClassModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Class</h2>
+        <button class="modal-close" onclick="closeModal('createClassModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="adminClassName">Class Name</label>
+          <input type="text" class="form-input2" id="adminClassName" placeholder="e.g., Grade 6B, Science Class..." maxlength="50"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="teacherUsername">Teacher Username</label>
+          <input type="text" class="form-input2" id="teacherUsername" placeholder="Username for the teacher login"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="teacherPassword">Teacher Password</label>
+          <input type="password" class="form-input2" id="teacherPassword" placeholder="Password for the teacher login"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('createClassModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createClassAsAdmin()">Create Class & Teacher Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Class Detail Modal (Admin) -->
+  <div class="modal" id="classDetailModal">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2 class="modal-title" id="classDetailTitle">Class Details</h2>
+        <button class="modal-close" onclick="closeModal('classDetailModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="classDetailContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('classDetailModal')">Close</button>
+        <button class="btn btn-danger" id="deleteClassBtn" onclick="deleteClassFromDetail()">Delete Class</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Teacher Modal (Admin) -->
+  <div class="modal" id="editTeacherModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Teacher</h2>
+        <button class="modal-close" onclick="closeModal('editTeacherModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="editTeacherUsername">Username</label>
+          <input type="text" class="form-input" id="editTeacherUsername" disabled/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editTeacherPassword">New Password</label>
+          <input type="password" class="form-input" id="editTeacherPassword" placeholder="Enter new password"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editTeacherConfirmPassword">Confirm New Password</label>
+          <input type="password" class="form-input" id="editTeacherConfirmPassword" placeholder="Confirm new password"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('editTeacherModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="updateTeacherPassword()">Update Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Class Modal -->
+  <div class="modal" id="newClassModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Class</h2>
+        <button class="modal-close" onclick="closeModal('newClassModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="newClassName">Class Name</label>
+          <input type="text" class="form-input2" id="newClassName" placeholder="e.g., Grade 6B, Science Class..." maxlength="50"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('newClassModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createNewClass()">Create Class</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Student Modal -->
+  <div class="modal" id="addStudentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New Student</h2>
+        <button class="modal-close" onclick="closeModal('addStudentModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="studentName">Student Name</label>
+          <input type="text" class="form-input2" id="studentName" placeholder="Enter student's full name..." maxlength="50"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="initialPoints">Starting Points (optional)</label>
+          <input type="number" class="form-input2" id="initialPoints" value="0" min="0"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profile Picture (optional)</label>
+          <div class="upload-area" onclick="document.getElementById('studentPhoto').click()">
+            <p>📷 Click to upload or drag image here</p>
+            <small>Supports JPG, PNG, GIF (max 5MB)</small>
+          </div>
+          <input type="file" id="studentPhoto" class="file-upload" accept="image/*"/>
+          <div id="photoPreview" style="display: none; text-align: center; margin-top: 1rem;">
+            <img id="previewImg" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color);"/>
+            <br>
+            <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;" onclick="removePhoto()">Remove Photo</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addStudentModal')">Cancel</button>
+        <button class="btn btn-success" onclick="addStudent()">Add Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Multiple Students Modal -->
+  <div class="modal" id="addMultipleModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add Multiple Students</h2>
+        <button class="modal-close" onclick="closeModal('addMultipleModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="multipleNames">Student Names (one per line)</label>
+          <textarea class="form-input2" id="multipleNames" rows="10" placeholder="John Doe&#10;Jane Smith&#10;..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addMultipleModal')">Cancel</button>
+        <button class="btn btn-success" onclick="addMultipleStudents()">Add Students</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Modal -->
+  <div class="modal" id="editStudentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Student</h2>
+        <button class="modal-close" onclick="closeModal('editStudentModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="editStudentName">Student Name</label>
+          <input type="text" class="form-input2" id="editStudentName" placeholder="Enter student's full name..." maxlength="50"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profile Picture</label>
+          <div class="upload-area" onclick="document.getElementById('editStudentPhoto').click()">
+            <p>📷 Click to upload or drag image here</p>
+            <small>Supports JPG, PNG, GIF (max 5MB)</small>
+          </div>
+          <input type="file" id="editStudentPhoto" class="file-upload" accept="image/*"/>
+          <div id="editPhotoPreview" style="display: none; text-align: center; margin-top: 1rem;">
+            <img id="editPreviewImg" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color);"/>
+            <br>
+            <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;" onclick="removeEditPhoto()">Remove Photo</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('editStudentModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="updateStudent()">Update Student</button>
+        <button class="btn btn-danger" onclick="deleteStudent()">Delete Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Points Modal -->
+  <div class="modal" id="studentPointsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="studentModalTitle">Manage Points</h2>
+        <button class="modal-close" onclick="closeModal('studentPointsModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="pointsChange">Points Change</label>
+          <input type="number" class="form-input2" id="pointsChange" placeholder="Enter positive number to add, negative to subtract"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pointsReason">Reason (optional)</label>
+          <textarea class="form-input2" id="pointsReason" placeholder="Why are you changing these points?" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('studentPointsModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="updateStudentPoints()">Update Points</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Reward Modal -->
+  <div class="modal" id="createRewardModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Reward</h2>
+        <button class="modal-close" onclick="closeModal('createRewardModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="reward-type-toggle">
+          <button type="button" class="reward-type-option active" data-type="points" onclick="selectRewardType('points', 'create')">
+            <span>🎁</span> Points Reward
+            <small style="display: block; color: var(--text-secondary);">Costs points to claim</small>
+          </button>
+          <button type="button" class="reward-type-option" data-type="instant" onclick="selectRewardType('instant', 'create')">
+            <span>⚡</span> Instant Reward
+            <small style="display: block; color: var(--text-secondary);">No points required</small>
+          </button>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="rewardTitle">Reward Title</label>
+          <input type="text" class="form-input2" id="rewardTitle" placeholder="e.g., Extra Recess, Homework Pass..." maxlength="50"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="rewardDescription">Description (optional)</label>
+          <textarea class="form-input2" id="rewardDescription" placeholder="Describe the reward..." rows="3"></textarea>
+        </div>
+        <div class="form-group" id="pointsRequiredGroup">
+          <label class="form-label" for="rewardPoints">Points Required</label>
+          <input type="number" class="form-input2" id="rewardPoints" placeholder="How many points needed?" min="1"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="rewardIcon">Icon (optional)</label>
+          <input type="text" class="form-input2" id="rewardIcon" placeholder="e.g., 🎉 or leave blank for default"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('createRewardModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createReward()">Create Reward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Reward Modal -->
+  <div class="modal" id="editRewardModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Reward</h2>
+        <button class="modal-close" onclick="closeModal('editRewardModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="reward-type-toggle">
+          <button type="button" class="reward-type-option" data-type="points" onclick="selectRewardType('points', 'edit')">
+            <span>🎁</span> Points Reward
+            <small style="display: block; color: var(--text-secondary);">Costs points to claim</small>
+          </button>
+          <button type="button" class="reward-type-option" data-type="instant" onclick="selectRewardType('instant', 'edit')">
+            <span>⚡</span> Instant Reward
+            <small style="display: block; color: var(--text-secondary);">No points required</small>
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRewardTitle">Reward Title</label>
+          <input type="text" class="form-input2" id="editRewardTitle" placeholder="e.g., Extra Recess, Homework Pass..." maxlength="50"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRewardDescription">Description (optional)</label>
+          <textarea class="form-input2" id="editRewardDescription" placeholder="Describe the reward..." rows="3"></textarea>
+        </div>
+        <div class="form-group" id="editPointsRequiredGroup">
+          <label class="form-label" for="editRewardPoints">Points Required</label>
+          <input type="number" class="form-input2" id="editRewardPoints" placeholder="How many points needed?" min="1"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRewardIcon">Icon (optional)</label>
+          <input type="text" class="form-input2" id="editRewardIcon" placeholder="e.g., 🎉 or leave blank for default"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('editRewardModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="updateReward()">Update Reward</button>
+        <button class="btn btn-danger" onclick="deleteReward()">Delete Reward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claim Reward Modal -->
+  <div class="modal" id="claimRewardModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Claim Reward</h2>
+        <button class="modal-close" onclick="closeModal('claimRewardModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="claimRewardContent">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('claimRewardModal')">Cancel</button>
+        <button class="btn btn-success" onclick="confirmClaimReward()">Claim Reward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instant Reward Modal -->
+  <div class="modal" id="instantRewardModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Give Instant Reward</h2>
+        <button class="modal-close" onclick="closeModal('instantRewardModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="instantRewardContent">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('instantRewardModal')">Cancel</button>
+        <button class="btn btn-success" onclick="confirmGiveInstantReward()">Give Reward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Points Modal -->
+  <div class="modal" id="bulkPointsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="bulkModalTitle"></h2>
+        <button class="modal-close" onclick="closeModal('bulkPointsModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="bulkSummary"></p>
+        <div class="form-group">
+          <label class="form-label" for="bulkReason">Reason (optional)</label>
+          <textarea class="form-input2" id="bulkReason" placeholder="Why are you changing these points?" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('bulkPointsModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmBulkPoints()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+let currentUser = null;
+let currentClassId = null;
+let currentViewMode = 'grid';
+let selectedStudents = new Set();
+let bulkMode = false;
+let bulkAction = '';
+let selectedRewardType = 'points';
+let currentRewardId = null;
+let currentStudentId = null;
+let currentTeacherUsername = null;
+
+let users = {};
+let schools = {};
+let userData = {};
+
+const classes = [];
+const students = {};
+const history = {};
+const rewards = {};
+
+function generateId() {
+  return 'xxxx-xxxx-xxxx-xxxx'.replace(/[x]/g, () => Math.random().toString(16)[2]);
+}
+
+function saveData() {
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('schools', JSON.stringify(schools));
+  localStorage.setItem('userData', JSON.stringify(userData));
+}
+
+function loadData() {
+  users = JSON.parse(localStorage.getItem('users') || '{}');
+  schools = JSON.parse(localStorage.getItem('schools') || '{}');
+  userData = JSON.parse(localStorage.getItem('userData') || '{}');
+}
+
+function saveUserData() {
+  userData[currentUser] = { classes, students, history, rewards };
+  saveData();
+}
+
+function loadUserData() {
+  const data = userData[currentUser] || { classes: [], students: {}, history: {}, rewards: {} };
+  classes.length = 0;
+  classes.push(...data.classes);
+  Object.assign(students, data.students);
+  Object.assign(history, data.history);
+  Object.assign(rewards, data.rewards);
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.classList.add('show'), 10);
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+  closeSidebar();
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('mobile-open');
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.remove('mobile-open');
+}
+
+function showLogin() {
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('signupForm').style.display = 'none';
+}
+
+function showSignup() {
+  document.getElementById('signupForm').style.display = 'block';
+  document.getElementById('loginForm').style.display = 'none';
+}
+
+function selectAccountType(type) {
+  document.querySelectorAll('.account-type-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.account-type-btn[data-type="${type}"]`).classList.add('active');
+}
+
+function init() {
+  loadData();
+  document.getElementById('loginBtn').addEventListener('click', login);
+  document.getElementById('signupBtn').addEventListener('click', signup);
+  if (currentUser && users[currentUser]) {
+    loadUserData();
+    showApp();
+  } else {
+    document.getElementById('authScreen').style.display = 'flex';
+  }
+
+  // File upload handlers
+  const uploadInputs = ['studentPhoto', 'editStudentPhoto'];
+  uploadInputs.forEach(id => {
+    const input = document.getElementById(id);
+    input.addEventListener('change', (e) => handleFileUpload(e, id === 'studentPhoto' ? 'previewImg' : 'editPreviewImg'));
+    const uploadArea = input.parentElement.querySelector('.upload-area');
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+    uploadArea.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      input.files = e.dataTransfer.files;
+      handleFileUpload({ target: input }, id === 'studentPhoto' ? 'previewImg' : 'editPreviewImg');
+    });
+  });
+}
+
+function handleFileUpload(event, previewId) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    showNotification('File size exceeds 5MB limit', 'error');
+    event.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById(previewId).src = e.target.result;
+    document.getElementById(previewId === 'previewImg' ? 'photoPreview' : 'editPhotoPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  document.getElementById('studentPhoto').value = '';
+  document.getElementById('photoPreview').style.display = 'none';
+}
+
+function removeEditPhoto() {
+  document.getElementById('editStudentPhoto').value = '';
+  document.getElementById('editPhotoPreview').style.display = 'none';
+}
+
+function login() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const error = document.getElementById('loginError');
+  
+  if (!username || !password) {
+    error.textContent = 'Please fill in all fields';
+    error.style.display = 'block';
+    return;
+  }
+  
+  if (!users[username] || users[username].password !== password) {
+    error.textContent = 'Invalid username or password';
+    error.style.display = 'block';
+    return;
+  }
+  
+  currentUser = username;
+  loadUserData();
+  showApp();
+}
+
+function signup() {
+  const username = document.getElementById('signupUsername').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+  const school = document.getElementById('signupSchool').value.trim();
+  const accountType = document.querySelector('.account-type-btn.active').dataset.type;
+  const error = document.getElementById('signupError');
+  const success = document.getElementById('signupSuccess');
+  
+  if (!username || !password || !confirmPassword || !school) {
+    error.textContent = 'Please fill in all fields';
+    error.style.display = 'block';
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    error.textContent = 'Passwords do not match';
+    error.style.display = 'block';
+    return;
+  }
+  
+  if (users[username]) {
+    error.textContent = 'Username already exists';
+    error.style.display = 'block';
+    return;
+  }
+  
+  users[username] = { password, school, accountType, createdAt: new Date().toISOString() };
+  userData[username] = { classes: [], students: {}, history: {}, rewards: {} };
+  
+  if (accountType === 'admin') {
+    schools[school] = { classes: [] };
+  } else {
+    const classId = generateId();
+    userData[username].classes.push({ id: classId, name: 'Default Class' });
+    userData[username].students[classId] = [];
+    userData[username].history[classId] = [];
+    userData[username].rewards[classId] = [];
+  }
+  
+  saveData();
+  success.textContent = 'Account created successfully! Please log in.';
+  success.style.display = 'block';
+  setTimeout(showLogin, 2000);
+}
+
+function logout() {
+  currentUser = null;
+  currentClassId = null;
+  classes.length = 0;
+  Object.keys(students).forEach(k => delete students[k]);
+  Object.keys(history).forEach(k => delete history[k]);
+  Object.keys(rewards).forEach(k => delete rewards[k]);
+  document.getElementById('appLayout').classList.remove('active');
+  document.getElementById('authScreen').style.display = 'flex';
+  closeSidebar();
+}
+
+function showApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appLayout').classList.add('active');
+  document.getElementById('sidebarUsername').textContent = currentUser;
+  document.getElementById('sidebarSchool').textContent = users[currentUser].school;
+  document.getElementById('sidebarUserAvatar').textContent = currentUser.charAt(0).toUpperCase();
+
+  const nav = document.querySelector('.sidebar-nav');
+  nav.innerHTML = `
+    <div class="nav-section">
+      <div class="nav-section-title">General</div>
+      <a href="#" class="nav-item active" onclick="showView('students')"><span class="nav-icon">👨‍🎓</span> Students</a>
+      <a href="#" class="nav-item" onclick="showView('leaderboard')"><span class="nav-icon">🏆</span> Leaderboard</a>
+      <a href="#" class="nav-item" onclick="showView('rewards')"><span class="nav-icon">🎁</span> Rewards</a>
+      <a href="#" class="nav-item" onclick="showView('history')"><span class="nav-icon">📜</span> History</a>
+      <a href="#" class="nav-item" onclick="showView('settings')"><span class="nav-icon">⚙️</span> Settings</a>
+    </div>
+  `;
+  
+  if (users[currentUser].accountType === 'admin') {
+    nav.innerHTML = `
+      <div class="nav-section">
+        <div class="nav-section-title">Admin</div>
+        <a href="#" class="nav-item active" onclick="showAdminClasses()"><span class="nav-icon">🏫</span> Classes</a>
+        <a href="#" class="nav-item" onclick="showAdminTeachers()"><span class="nav-icon">👩‍🏫</span> Teachers</a>
+        <a href="#" class="nav-item" onclick="renderAdminSettings()"><span class="nav-icon">⚙️</span> Settings</a>
+      </div>
+    `;
+    showAdminClasses();
+  } else {
+    if (classes.length === 0)
+        {
+      const classId = generateId();
+      classes.push({ id: classId, name: 'Default Class' });
+      students[classId] = [];
+      history[classId] = [];
+      rewards[classId] = [];
+      saveUserData();
+    }
+    currentClassId = classes[0]?.id;
+    updateClassSelector();
+    showView('students');
+  }
+}
+
+function updateClassSelector() {
+  const selector = document.getElementById('classSelector');
+  selector.innerHTML = '';
+  classes.forEach(cls => {
+    const option = document.createElement('option');
+    option.value = cls.id;
+    option.textContent = cls.name;
+    if (cls.id === currentClassId) option.selected = true;
+    selector.appendChild(option);
+  });
+  selector.onchange = () => {
+    currentClassId = selector.value;
+    showView(document.querySelector('.nav-item.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || 'students');
+  };
+}
+
+function showView(view) {
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  document.querySelector(`.nav-item[onclick="showView('${view}')"]`)?.classList.add('active');
+  document.querySelectorAll('#studentsView, #leaderboardView, #rewardsView, #historyView, #settingsView').forEach(v => v.style.display = 'none');
+  document.getElementById(`${view}View`).style.display = 'block';
+  document.getElementById('pageTitle').textContent = view.charAt(0).toUpperCase() + view.slice(1);
+  
+  if (view === 'students') renderStudents();
+  else if (view === 'leaderboard') renderLeaderboard();
+  else if (view === 'rewards') renderRewards();
+  else if (view === 'history') renderHistory();
+  else if (view === 'settings') renderSettings();
+  exitBulkMode();
+  closeSidebar();
+}
+
+function renderStudents() {
+  const grid = document.getElementById('studentsGrid');
+  const list = document.getElementById('studentsList');
+  grid.innerHTML = '<div class="student-card add-student-card" onclick="openAddStudentModal()"><div class="add-student-icon">➕</div><div>Add New Student</div></div>';
+  list.innerHTML = '';
+  
+  const classStudents = students[currentClassId] || [];
+  classStudents.forEach(student => {
+    const isSelected = selectedStudents.has(student.id);
+    
+    const gridItem = document.createElement('div');
+    gridItem.className = `student-card${isSelected ? ' selected' : ''}`;
+    gridItem.innerHTML = `
+      <div class="student-avatar">${student.photo ? `<img src="${student.photo}" alt="${student.name}"/>` : student.name.charAt(0).toUpperCase()}</div>
+      <div class="student-name">${student.name}</div>
+      <div class="student-points">${student.points} points</div>
+      <div class="student-rewards">${student.rewards?.length || 0} rewards claimed</div>
+      <div class="student-instant-rewards">${student.instantRewards?.length || 0} instant rewards</div>
+    `;
+    gridItem.onclick = (e) => bulkMode ? toggleStudentSelection(student.id, gridItem, null) : openStudentPointsModal(student);
+    
+    const listItem = document.createElement('div');
+    listItem.className = `student-list-item${isSelected ? ' selected' : ''}`;
+    listItem.innerHTML = `
+      <div class="student-list-avatar">${student.photo ? `<img src="${student.photo}" alt="${student.name}"/>` : student.name.charAt(0).toUpperCase()}</div>
+      <div class="student-list-info">
+        <div class="student-list-name">${student.name}</div>
+        <div class="student-list-details">Points: <span class="student-list-points">${student.points}</span> | Rewards: ${student.rewards?.length || 0} | Instant: ${student.instantRewards?.length || 0}</div>
+      </div>
+      <div class="student-list-actions">
+        <button class="btn btn-primary" onclick="openStudentPointsModal({id: '${student.id}'})">Points</button>
+        <button class="btn btn-secondary" onclick="openEditStudentModal('${student.id}')">Edit</button>
+      </div>
+    `;
+    listItem.onclick = (e) => {
+      if (e.target.tagName !== 'BUTTON') toggleStudentSelection(student.id, gridItem, listItem);
+    };
+    
+    grid.appendChild(gridItem);
+    list.appendChild(listItem);
+  });
+  
+  grid.style.display = currentViewMode === 'grid' ? 'grid' : 'none';
+  list.style.display = currentViewMode === 'list' ? 'flex' : 'none';
+  updateSelectedCount();
+}
+
+function switchStudentView(event, mode) {
+  event.preventDefault();
+  currentViewMode = mode;
+  document.querySelectorAll('.view-option').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.view-option[data-view="${mode}"]`).classList.add('active');
+  renderStudents();
+}
+
+function enterBulkMode() {
+  bulkMode = true;
+  document.getElementById('bulkActions').classList.add('active');
+  document.querySelectorAll('.student-list-actions').forEach(actions => actions.style.display = 'none');
+}
+
+function exitBulkMode() {
+  bulkMode = false;
+  selectedStudents.clear();
+  document.getElementById('bulkActions').classList.remove('active');
+  document.querySelectorAll('.student-card, .student-list-item').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.student-list-actions').forEach(actions => actions.style.display = 'flex');
+  updateSelectedCount();
+}
+
+function toggleStudentSelection(studentId, gridItem, listItem) {
+  if (selectedStudents.has(studentId)) {
+    selectedStudents.delete(studentId);
+    gridItem?.classList.remove('selected');
+    listItem?.classList.remove('selected');
+  } else {
+    selectedStudents.add(studentId);
+    gridItem?.classList.add('selected');
+    listItem?.classList.add('selected');
+  }
+  updateSelectedCount();
+}
+
+function updateSelectedCount() {
+  document.getElementById('selectedCount').textContent = `${selectedStudents.size} selected`;
+}
+
+function openAddStudentModal() {
+  document.getElementById('studentName').value = '';
+  document.getElementById('initialPoints').value = '0';
+  document.getElementById('studentPhoto').value = '';
+  document.getElementById('photoPreview').style.display = 'none';
+  openModal('addStudentModal');
+}
+
+function addStudent() {
+  const name = document.getElementById('studentName').value.trim();
+  const points = parseInt(document.getElementById('initialPoints').value) || 0;
+  const photoInput = document.getElementById('studentPhoto');
+  if (!name) {
+    showNotification('Student name is required', 'error');
+    return;
+  }
+  
+  const studentId = generateId();
+  const student = { id: studentId, name, points, rewards: [], instantRewards: [] };
+  
+  if (photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      student.photo = reader.result;
+      if (!students[currentClassId]) students[currentClassId] = [];
+      students[currentClassId].push(student);
+      saveUserData();
+      renderStudents();
+      closeModal('addStudentModal');
+      showNotification('Student added successfully', 'success');
+    };
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    if (!students[currentClassId]) students[currentClassId] = [];
+    students[currentClassId].push(student);
+    saveUserData();
+    renderStudents();
+    closeModal('addStudentModal');
+    showNotification('Student added successfully', 'success');
+  }
+}
+
+function openAddMultipleModal() {
+  document.getElementById('multipleNames').value = '';
+  openModal('addMultipleModal');
+}
+
+function addMultipleStudents() {
+  const names = document.getElementById('multipleNames').value.trim().split('\n').map(n => n.trim()).filter(n => n);
+  if (names.length === 0) {
+    showNotification('Please enter at least one student name', 'error');
+    return;
+  }
+  
+  names.forEach(name => {
+    if (!students[currentClassId]) students[currentClassId] = [];
+    students[currentClassId].push({
+      id: generateId(),
+      name,
+      points: 0,
+      rewards: [],
+      instantRewards: []
+    });
+  });
+  
+  saveUserData();
+  renderStudents();
+  closeModal('addMultipleModal');
+  showNotification(`${names.length} students added successfully`, 'success');
+}
+
+function openEditStudentModal(studentId) {
+  const student = students[currentClassId].find(s => s.id === studentId);
+  if (!student) return;
+  
+  currentStudentId = studentId;
+  document.getElementById('editStudentName').value = student.name;
+  document.getElementById('editStudentPhoto').value = '';
+  const preview = document.getElementById('editPhotoPreview');
+  const previewImg = document.getElementById('editPreviewImg');
+  if (student.photo) {
+    previewImg.src = student.photo;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+  openModal('editStudentModal');
+}
+
+function updateStudent() {
+  const name = document.getElementById('editStudentName').value.trim();
+  const photoInput = document.getElementById('editStudentPhoto');
+  if (!name) {
+    showNotification('Student name is required', 'error');
+    return;
+  }
+  
+  const student = students[currentClassId].find(s => s.id === currentStudentId);
+  if (!student) return;
+  
+  student.name = name;
+  if (photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      student.photo = reader.result;
+      saveUserData();
+      renderStudents();
+      closeModal('editStudentModal');
+      showNotification('Student updated successfully', 'success');
+    };
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    if (document.getElementById('editPhotoPreview').style.display === 'none') {
+      delete student.photo;
+    }
+    saveUserData();
+    renderStudents();
+    closeModal('editStudentModal');
+    showNotification('Student updated successfully', 'success');
+  }
+}
+
+function deleteStudent() {
+  if (!confirm('Are you sure you want to delete this student? This cannot be undone.')) return;
+  
+  students[currentClassId] = students[currentClassId].filter(s => s.id !== currentStudentId);
+  delete history[currentClassId][currentStudentId];
+  saveUserData();
+  renderStudents();
+  closeModal('editStudentModal');
+  showNotification('Student deleted successfully', 'success');
+}
+
+function openStudentPointsModal(student) {
+  currentStudentId = student.id;
+  document.getElementById('studentModalTitle').textContent = `Manage Points for ${student.name}`;
+  document.getElementById('pointsChange').value = '';
+  document.getElementById('pointsReason').value = '';
+  openModal('studentPointsModal');
+}
+
+function updateStudentPoints() {
+  const pointsChange = parseInt(document.getElementById('pointsChange').value);
+  const reason = document.getElementById('pointsReason').value.trim();
+  if (isNaN(pointsChange)) {
+    showNotification('Please enter a valid number of points', 'error');
+    return;
+  }
+  
+  const student = students[currentClassId].find(s => s.id === currentStudentId);
+  if (!student) return;
+  
+  const newPoints = Math.max(0, student.points + pointsChange);
+  if (newPoints !== student.points) {
+    student.points = newPoints;
+    if (!history[currentClassId]) history[currentClassId] = {};
+    history[currentClassId].push({
+      id: generateId(),
+      studentId: currentStudentId,
+      studentName: student.name,
+      pointsChange,
+      reason,
+      timestamp: new Date().toISOString()
+    });
+    saveUserData();
+    renderStudents();
+    showNotification(`Points updated for ${student.name}`, 'success');
+  }
+  closeModal('studentPointsModal');
+}
+
+function openBulkPointsModal(action) {
+  if (selectedStudents.size === 0) {
+    showNotification('Please select at least one student', 'error');
+    return;
+  }
+  
+  bulkAction = action;
+  const amount = Math.abs(parseInt(document.getElementById('bulkPointAmount').value)) || 1;
+  document.getElementById('bulkModalTitle').textContent = `${action === 'add' ? 'Add' : 'Subtract'} Points`;
+  document.getElementById('bulkSummary').textContent = `${action === 'add' ? 'Add' : 'Subtract'} ${amount} points to ${selectedStudents.size} student${selectedStudents.size > 1 ? 's' : ''}`;
+  document.getElementById('bulkReason').value = '';
+  openModal('bulkPointsModal');
+}
+
+function confirmBulkPoints() {
+  const amount = Math.abs(parseInt(document.getElementById('bulkPointAmount').value)) || 1;
+  const reason = document.getElementById('bulkReason').value.trim();
+  const multiplier = bulkAction === 'add' ? 1 : -1;
+  
+  selectedStudents.forEach(studentId => {
+    const student = students[currentClassId].find(s => s.id === studentId);
+    if (student) {
+      student.points = Math.max(0, student.points + (amount * multiplier));
+      history[currentClassId].push({
+        id: generateId(),
+        studentId: student.id,
+        studentName: student.name,
+        pointsChange: amount * multiplier,
+        reason,
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+  
+  saveUserData();
+  renderStudents();
+  closeModal('bulkPointsModal');
+  exitBulkMode();
+  showNotification(`Points ${bulkAction}ed for ${selectedStudents.size} students`, 'success');
+}
+
+function renderLeaderboard() {
+  const leaderboard = document.getElementById('leaderboard');
+  leaderboard.innerHTML = '';
+  const sortedStudents = [...(students[currentClassId] || [])].sort((a, b) => b.points - a.points);
+  
+  sortedStudents.forEach((student, index) => {
+    const item = document.createElement('div');
+    item.className = 'leaderboard-item';
+    item.innerHTML = `
+      <div class="leaderboard-rank ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}">${index + 1}</div>
+      <div class="leaderboard-avatar">${student.photo ? `<img src="${student.photo}" alt="${student.name}"/>` : student.name.charAt(0).toUpperCase()}</div>
+      <div class="leaderboard-name">${student.name}</div>
+      <div class="leaderboard-points">${student.points} points</div>
+    `;
+    leaderboard.appendChild(item);
+  });
+}
+
+function renderRewards() {
+  const grid = document.getElementById('rewardsGrid');
+  grid.innerHTML = '';
+  
+  (rewards[currentClassId] || []).forEach(reward => {
+    const card = document.createElement('div');
+    card.className = `reward-card ${reward.type === 'instant' ? 'instant-reward' : 'points-reward'}`;
+    card.innerHTML = `
+      <div class="reward-type-badge ${reward.type === 'instant' ? 'instant-badge' : 'points-badge'}">${reward.type}</div>
+      <div class="reward-header">
+        <div>
+          <div class="reward-title">${reward.icon || '🎁'} ${reward.title}</div>
+          ${reward.points ? `<div class="reward-points">${reward.points} points</div>` : ''}
+        </div>
+      </div>
+      <div class="reward-description">${reward.description || 'No description'}</div>
+      <div class="reward-actions">
+        <button class="btn btn-primary" onclick="openClaimRewardModal('${reward.id}')">Claim</button>
+        <button class="btn btn-info" onclick="openInstantRewardModal('${reward.id}')">Give</button>
+        <button class="btn btn-secondary" onclick="openEditRewardModal('${reward.id}')">Edit</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function selectRewardType(type, context) {
+  selectedRewardType = type;
+  document.querySelectorAll(`#${context}RewardModal .reward-type-option`).forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`#${context}RewardModal .reward-type-option[data-type="${type}"]`).classList.add('active');
+  document.getElementById(`${context}PointsRequiredGroup`).style.display = type === 'points' ? 'block' : 'none';
+}
+
+function openCreateRewardModal() {
+  selectedRewardType = 'points';
+  document.querySelectorAll('#createRewardModal .reward-type-option').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#createRewardModal .reward-type-option[data-type="points"]').classList.add('active');
+  document.getElementById('rewardTitle').value = '';
+  document.getElementById('rewardDescription').value = '';
+  document.getElementById('rewardPoints').value = '';
+  document.getElementById('rewardIcon').value = '';
+  document.getElementById('pointsRequiredGroup').style.display = 'block';
+  openModal('createRewardModal');
+}
+
+function createReward() {
+  const title = document.getElementById('rewardTitle').value.trim();
+  const description = document.getElementById('rewardDescription').value.trim();
+  const points = parseInt(document.getElementById('rewardPoints').value) || 0;
+  const icon = document.getElementById('rewardIcon').value.trim();
+  
+  if (!title) {
+    showNotification('Reward title is required', 'error');
+    return;
+  }
+  if (selectedRewardType === 'points' && points <= 0) {
+    showNotification('Points required must be greater than 0', 'error');
+    return;
+  }
+  
+  if (!rewards[currentClassId]) rewards[currentClassId] = [];
+  rewards[currentClassId].push({
+    id: generateId(),
+    type: selectedRewardType,
+    title,
+    description,
+    points: selectedRewardType === 'points' ? points : 0,
+    icon
+  });
+  
+  saveUserData();
+  renderRewards();
+  closeModal('createRewardModal');
+  showNotification('Reward created successfully', 'success');
+}
+
+function openEditRewardModal(rewardId) {
+  const reward = rewards[currentClassId].find(r => r.id === rewardId);
+  if (!reward) return;
+  
+  currentRewardId = rewardId;
+  selectedRewardType = reward.type;
+  document.querySelectorAll('#editRewardModal .reward-type-option').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`#editRewardModal .reward-type-option[data-type="${reward.type}"]`).classList.add('active');
+  document.getElementById('editRewardTitle').value = reward.title;
+  document.getElementById('editRewardDescription').value = reward.description || '';
+  document.getElementById('editRewardPoints').value = reward.points || '';
+  document.getElementById('editRewardIcon').value = reward.icon || '';
+  document.getElementById('editPointsRequiredGroup').style.display = reward.type === 'points' ? 'block' : 'none';
+  openModal('editRewardModal');
+}
+
+function updateReward() {
+  const title = document.getElementById('editRewardTitle').value.trim();
+  const description = document.getElementById('editRewardDescription').value.trim();
+  const points = parseInt(document.getElementById('editRewardPoints').value) || 0;
+  const icon = document.getElementById('editRewardIcon').value.trim();
+  
+  if (!title) {
+    showNotification('Reward title is required', 'error');
+    return;
+  }
+  if (selectedRewardType === 'points' && points <= 0) {
+    showNotification('Points required must be greater than 0', 'error');
+    return;
+  }
+  
+  const reward = rewards[currentClassId].find(r => r.id === currentRewardId);
+  if (!reward) return;
+  
+  reward.title = title;
+  reward.description = description;
+  reward.points = selectedRewardType === 'points' ? points : 0;
+  reward.type = selectedRewardType;
+  reward.icon = icon;
+  
+  saveUserData();
+  renderRewards();
+  closeModal('editRewardModal');
+  showNotification('Reward updated successfully', 'success');
+}
+
+function deleteReward() {
+  if (!confirm('Are you sure you want to delete this reward?')) return;
+  
+  rewards[currentClassId] = rewards[currentClassId].filter(r => r.id !== currentRewardId);
+  saveUserData();
+  renderRewards();
+  closeModal('editRewardModal');
+  showNotification('Reward deleted successfully', 'success');
+}
+
+function openClaimRewardModal(rewardId) {
+  currentRewardId = rewardId;
+  const reward = rewards[currentClassId].find(r => r.id === rewardId);
+  if (!reward) return;
+  
+  const content = document.getElementById('claimRewardContent');
+  content.innerHTML = `
+    <p>Claim "${reward.title}" for a student.</p>
+    <div class="form-group">
+      <label class="form-label" for="claimStudentSelect">Select Student</label>
+      <select class="form-input" id="claimStudentSelect">
+        ${students[currentClassId].map(s => `<option value="${s.id}" ${s.points < reward.points ? 'disabled' : ''}>${s.name} (${s.points} points)</option>`).join('')}
+      </select>
+    </div>
+    ${reward.points ? `<p>This will deduct ${reward.points} points from the selected student.</p>` : ''}
+  `;
+  openModal('claimRewardModal');
+}
+
+function confirmClaimReward() {
+  const studentId = document.getElementById('claimStudentSelect').value;
+  const reward = rewards[currentClassId].find(r => r.id === currentRewardId);
+  const student = students[currentClassId].find(s => s.id === studentId);
+  
+  if (!student || !reward) return;
+  
+  if (reward.points && student.points < reward.points) {
+    showNotification('Student does not have enough points', 'error');
+    return;
+  }
+  
+  if (reward.points) {
+    student.points -= reward.points;
+    history[currentClassId].push({
+      id: generateId(),
+      studentId: student.id,
+      studentName: student.name,
+      pointsChange: -reward.points,
+      reason: `Claimed reward: ${reward.title}`,
+      timestamp: new Date().toISOString()
+    });
+  }
+  
+  student.rewards = student.rewards || [];
+  student.rewards.push({ id: reward.id, title: reward.title, timestamp: new Date().toISOString() });
+  
+  saveUserData();
+  renderStudents();
+  closeModal('claimRewardModal');
+  showNotification(`Reward "${reward.title}" claimed for ${student.name}`, 'success');
+}
+
+function openInstantRewardModal(rewardId) {
+  currentRewardId = rewardId;
+  const reward = rewards[currentClassId].find(r => r.id === rewardId);
+  if (!reward) return;
+  
+  const content = document.getElementById('instantRewardContent');
+  content.innerHTML = `
+    <p>Give "${reward.title}" to a student.</p>
+    <div class="form-group">
+      <label class="form-label" for="instantStudentSelect">Select Student</label>
+      <select class="form-input" id="instantStudentSelect">
+        ${students[currentClassId].map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+      </select>
+    </div>
+  `;
+  openModal('instantRewardModal');
+}
+
+function confirmGiveInstantReward() {
+  const studentId = document.getElementById('instantStudentSelect').value;
+  const reward = rewards[currentClassId].find(r => r.id === currentRewardId);
+  const student = students[currentClassId].find(s => s.id === studentId);
+  
+  if (!student || !reward) return;
+  
+  student.instantRewards = student.instantRewards || [];
+  student.instantRewards.push({ id: reward.id, title: reward.title, timestamp: new Date().toISOString() });
+  
+  history[currentClassId].push({
+    id: generateId(),
+    studentId: student.id,
+    studentName: student.name,
+    pointsChange: 0,
+    reason: `Received instant reward: ${reward.title}`,
+    timestamp: new Date().toISOString()
+  });
+  
+  saveUserData();
+  renderStudents();
+  closeModal('instantRewardModal');
+  showNotification(`Instant reward "${reward.title}" given to ${student.name}`, 'success');
+}
+
+function renderHistory() {
+  const historyList = document.getElementById('historyList');
+  historyList.innerHTML = '';
+  
+  (history[currentClassId] || []).slice().reverse().forEach(entry => {
+    const item = document.createElement('div');
+    item.className = 'student-list-item';
+    item.innerHTML = `
+      <div class="student-list-info">
+        <div class="student-list-name">${entry.studentName}</div>
+        <div class="student-list-details">
+          ${entry.pointsChange !== 0 ? `${entry.pointsChange > 0 ? '+' : ''}${entry.pointsChange} points` : 'Instant Reward'} | 
+          ${entry.reason || 'No reason provided'} | 
+          ${new Date(entry.timestamp).toLocaleString()}
+        </div>
+      </div>
+    `;
+    historyList.appendChild(item);
+  });
+}
+
+function exportHistory() {
+  const csv = ['Student,Points Change,Reason,Timestamp'];
+  (history[currentClassId] || []).forEach(entry => {
+    csv.push(`"${entry.studentName.replace(/"/g, '""')}",${entry.pointsChange},"${entry.reason?.replace(/"/g, '""') || ''}","${new Date(entry.timestamp).toLocaleString()}"`);
+  });
+  const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `history_${classes.find(c => c.id === currentClassId)?.name || 'class'}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function clearHistory() {
+  if (!confirm('Are you sure you want to clear the points history? This cannot be undone.')) return;
+  history[currentClassId] = [];
+  saveUserData();
+  renderHistory();
+  showNotification('History cleared', 'success');
+}
+
+function renderSettings() {
+  document.getElementById('settingsUsername').textContent = currentUser;
+  document.getElementById('settingsSchool').textContent = users[currentUser].school;
+  document.getElementById('currentClassName').textContent = classes.find(c => c.id === currentClassId)?.name || 'No class';
+  document.getElementById('totalStudents').textContent = students[currentClassId]?.length || 0;
+  document.getElementById('totalPoints').textContent = (students[currentClassId] || []).reduce((sum, s) => sum + s.points, 0);
+}
+
+function resetAllPoints() {
+  if (!confirm('Are you sure you want to reset all student points to 0? This cannot be undone.')) return;
+  
+  students[currentClassId].forEach(student => {
+    if (student.points > 0) {
+      history[currentClassId].push({
+        id: generateId(),
+        studentId: student.id,
+        studentName: student.name,
+        pointsChange: -student.points,
+        reason: 'Reset all points',
+        timestamp: new Date().toISOString()
+      });
+      student.points = 0;
+    }
+  });
+  
+  saveUserData();
+  renderStudents();
+  renderSettings();
+  showNotification('All points reset', 'success');
+}
+
+function backupClassData() {
+  const data = {
+    className: classes.find(c => c.id === currentClassId)?.name,
+    students: students[currentClassId],
+    history: history[currentClassId],
+    rewards: rewards[currentClassId]
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `backup_${data.className || 'class'}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showNotification('Backup created successfully', 'success');
+}
+
+function deleteCurrentClass() {
+  if (!confirm('Are you sure you want to delete this class and all its data? This cannot be undone.')) return;
+  
+  classes.splice(classes.findIndex(c => c.id === currentClassId), 1);
+  delete students[currentClassId];
+  delete history[currentClassId];
+  delete rewards[currentClassId];
+  
+  saveUserData();
+  currentClassId = classes[0]?.id;
+  updateClassSelector();
+  showView('students');
+  showNotification('Class deleted successfully', 'success');
+}
+
+function copyClassName() {
+  const className = classes.find(c => c.id === currentClassId)?.name || '';
+  navigator.clipboard.writeText(className).then(() => {
+    showNotification('Class name copied to clipboard', 'success');
+  });
+}
+
+function onSearchChange() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('studentsGrid');
+  const list = document.getElementById('studentsList');
+  
+  grid.querySelectorAll('.student-card:not(.add-student-card)').forEach(card => {
+    const name = card.querySelector('.student-name').textContent.toLowerCase();
+    card.style.display = name.includes(query) ? '' : 'none';
+  });
+  
+  list.querySelectorAll('.student-list-item').forEach(item => {
+    const name = item.querySelector('.student-list-name').textContent.toLowerCase();
+    item.style.display = name.includes(query) ? '' : 'none';
+  });
+}
+
+function openNewClassModal() {
+  document.getElementById('newClassName').value = '';
+  openModal('newClassModal');
+}
+
+function createNewClass() {
+  const name = document.getElementById('newClassName').value.trim();
+  if (!name) {
+    showNotification('Class name is required', 'error');
+    return;
+  }
+  
+  const classId = generateId();
+  classes.push({ id: classId, name });
+  students[classId] = [];
+  history[classId] = [];
+  rewards[classId] = [];
+  
+  saveUserData();
+  currentClassId = classId;
+  updateClassSelector();
+  showView('students');
+  closeModal('newClassModal');
+  showNotification('Class created successfully', 'success');
+}
+
+// Admin Functions
+function showAdminClasses() {
+  showView('settings');
+  document.getElementById('settingsView').innerHTML = `
+    <div class="content-header">
+      <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Classes</h2>
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="openModal('createClassModal')">Create New Class</button>
+      </div>
+    </div>
+    <div class="admin-content" id="adminClassesContent"></div>
+  `;
+  renderAdminClasses();
+}
+
+function renderAdminClasses() {
+  const content = document.getElementById('adminClassesContent');
+  const schoolClasses = schools[users[currentUser].school]?.classes || [];
+  content.innerHTML = `
+    <div class="admin-header">
+      <h2 class="admin-title">All Classes</h2>
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-value">${schoolClasses.length}</div>
+          <div class="stat-label">Total Classes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${Object.keys(users).filter(u => users[u].school === users[currentUser].school && users[u].accountType === 'personal').length}</div>
+          <div class="stat-label">Teachers</div>
+        </div>
+      </div>
+    </div>
+    <div class="students-grid">
+      ${schoolClasses.map(cls => `
+        <div class="student-card" onclick="openClassDetailModal('${cls.id}')">
+          <div class="student-name">${cls.name}</div>
+          <div class="student-points">Teacher: ${cls.teacher}</div>
+          <div class="student-rewards">${userData[cls.teacher]?.students[cls.id]?.length || 0} students</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function openClassDetailModal(classId) {
+  const cls = schools[users[currentUser].school].classes.find(c => c.id === classId);
+  if (!cls) return;
+  
+  document.getElementById('classDetailTitle').textContent = cls.name;
+  const content = document.getElementById('classDetailContent');
+  const classStudents = userData[cls.teacher]?.students[classId] || [];
+  const classHistory = userData[cls.teacher]?.history[classId] || [];
+  const totalPoints = classStudents.reduce((sum, s) => sum + s.points, 0);
+  
+  content.innerHTML = `
+    <div class="class-detail-card">
+      <div class="class-detail-header">
+        <div>
+          <div class="class-detail-title">${cls.name}</div>
+          <div class="class-detail-teacher">Teacher: ${cls.teacher}</div>
+        </div>
+        <button class="btn btn-secondary" onclick="openEditTeacherModal('${cls.teacher}')">Edit Teacher</button>
+      </div>
+      <div class="class-stats">
+        <div class="class-stat">
+          <div class="class-stat-value">${classStudents.length}</div>
+          <div class="class-stat-label">Total Students</div>
+        </div>
+        <div class="class-stat">
+          <div class="class-stat-value">${totalPoints}</div>
+          <div class="class-stat-label">Total Points</div>
+        </div>
+        <div class="class-stat">
+          <div class="class-stat-value">${classHistory.length}</div>
+          <div class="class-stat-label">History Entries</div>
+        </div>
+      </div>
+      <table class="students-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Points</th>
+            <th>Rewards</th>
+            <th>Instant Rewards</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${classStudents.map(s => `
+            <tr>
+              <td>${s.name}</td>
+              <td>${s.points}</td>
+              <td>${s.rewards?.length || 0}</td>
+              <td>${s.instantRewards?.length || 0}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+  openModal('classDetailModal');
+}
+
+function createClassAsAdmin() {
+  const className = document.getElementById('adminClassName').value.trim();
+  const teacherUsername = document.getElementById('teacherUsername').value.trim();
+  const teacherPassword = document.getElementById('teacherPassword').value;
+  
+  if (!className || !teacherUsername || !teacherPassword) {
+    showNotification('Please fill in all fields', 'error');
+    return;
+  }
+  
+  if (users[teacherUsername]) {
+    showNotification('Teacher username already exists', 'error');
+    return;
+  }
+  
+  const classId = generateId();
+  users[teacherUsername] = {
+    password: teacherPassword,
+    school: users[currentUser].school,
+    accountType: 'personal',
+    createdAt: new Date().toISOString()
+  };
+  userData[teacherUsername] = {
+    classes: [{ id: classId, name: className }],
+    students: { [classId]: [] },
+    history: { [classId]: [] },
+    rewards: { [classId]: [] }
+  };
+  
+  if (!schools[users[currentUser].school]) schools[users[currentUser].school] = { classes: [] };
+  schools[users[currentUser].school].classes.push({
+    id: classId,
+    name: className,
+    teacher: teacherUsername
+  });
+  
+  saveData();
+  renderAdminClasses();
+  closeModal('createClassModal');
+  showNotification('Class and teacher account created successfully', 'success');
+}
+
+function showAdminTeachers() {
+  showView('settings');
+  document.getElementById('settingsView').innerHTML = `
+    <div class="content-header">
+      <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Teachers</h2>
+    </div>
+    <div class="admin-content" id="adminTeachersContent"></div>
+  `;
+  renderAdminTeachers();
+}
+
+function renderAdminTeachers() {
+  const content = document.getElementById('adminTeachersContent');
+  const schoolTeachers = Object.keys(users).filter(u => users[u].school === users[currentUser].school && users[u].accountType === 'personal');
+  content.innerHTML = `
+    <div class="admin-header">
+      <h2 class="admin-title">All Teachers</h2>
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-value">${schoolTeachers.length}</div>
+          <div class="stat-label">Total Teachers</div>
+        </div>
+      </div>
+    </div>
+    <div class="students-grid">
+      ${schoolTeachers.map(teacher => `
+        <div class="student-card" onclick="openEditTeacherModal('${teacher}')">
+          <div class="student-avatar">${teacher.charAt(0).toUpperCase()}</div>
+          <div class="student-name">${teacher}</div>
+          <div class="student-points">${userData[teacher]?.classes.length || 0} classes</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function openEditTeacherModal(username) {
+  currentTeacherUsername = username;
+  document.getElementById('editTeacherUsername').value = username;
+  document.getElementById('editTeacherPassword').value = '';
+  document.getElementById('editTeacherConfirmPassword').value = '';
+  openModal('editTeacherModal');
+}
+
+function updateTeacherPassword() {
+  const password = document.getElementById('editTeacherPassword').value;
+  const confirmPassword = document.getElementById('editTeacherConfirmPassword').value;
+  
+  if (!password || !confirmPassword) {
+    showNotification('Please fill in both password fields', 'error');
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    showNotification('Passwords do not match', 'error');
+    return;
+  }
+  
+  users[currentTeacherUsername].password = password;
+  saveData();
+  closeModal('editTeacherModal');
+  showNotification('Teacher password updated successfully', 'success');
+}
+
+function deleteClassFromDetail() {
+  if (!confirm('Are you sure you want to delete this class and all its data? This cannot be undone.')) return;
+  
+  const cls = schools[users[currentUser].school].classes.find(c => c.id === document.getElementById('classDetailTitle').textContent);
+  if (!cls) return;
+  
+  schools[users[currentUser].school].classes = schools[users[currentUser].school].classes.filter(c => c.id !== cls.id);
+  delete userData[cls.teacher].classes.find(c => c.id === cls.id);
+  delete userData[cls.teacher].students[cls.id];
+  delete userData[cls.teacher].history[cls.id];
+  delete userData[cls.teacher].rewards[cls.id];
+  
+  saveData();
+  renderAdminClasses();
+  closeModal('classDetailModal');
+  showNotification('Class deleted successfully', 'success');
+}
+
+function renderAdminSettings() {
+  showView('settings');
+  document.getElementById('settingsView').innerHTML = `
+    <div class="content-header">
+      <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Admin Settings</h2>
+    </div>
+    <div style="display: grid; gap: 2rem;">
+      <div style="background: var(--surface); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Admin Information</h3>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span>Username:</span>
+          <span style="font-weight: 600;">${currentUser}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span>School:</span>
+          <span style="font-weight: 600;">${users[currentUser].school}</span>
+        </div>
+      </div>
+      <div style="background: var(--surface); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">School Statistics</h3>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span>Total Classes:</span>
+          <span style="font-weight: 600;">${schools[users[currentUser].school]?.classes.length || 0}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span>Total Teachers:</span>
+          <span style="font-weight: 600;">${Object.keys(users).filter(u => users[u].school === users[currentUser].school && users[u].accountType === 'personal').length}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Initialize the app
+init();
+</script>
+
+</body>
+</html>
